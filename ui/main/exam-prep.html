@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exam Prep Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<link rel="stylesheet" href="exam-prep.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+</head>
+<body>
+<div class="app">
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <div class="eyebrow">AI Study Platform</div>
+    <h1 id="mainTitle">Bezalel<em>AI</em></h1>
+  </div>
+  <div class="nav-cluster">
+    <div class="step-dots">
+      <div class="dot active" id="d1"></div>
+      <div class="dot" id="d2"></div>
+      <div class="dot" id="d3"></div>
+      <div class="dot" id="d4"></div>
+    </div>
+    <div class="step-lbl" id="stepLbl">Enter Material</div>
+  </div>
+</div>
+
+<!-- STEP 1 -->
+<div class="step active" id="step1">
+  <div class="fl">Step 01 � Study Material</div>
+
+  <div class="input-type-row">
+    <div class="itype-btn active" onclick="toggleInputType('text',this)">Text</div>
+    <div class="itype-btn" onclick="toggleInputType('file',this)">File / Doc</div>
+    <div class="itype-btn" onclick="toggleInputType('image',this)">Image</div>
+    <div class="itype-btn" onclick="toggleInputType('link',this)">Link</div>
+  </div>
+
+  <div class="input-blocks">
+    <div class="input-block show" id="iblock-text">
+      <textarea id="materialInput" placeholder="Paste your notes here..."></textarea>
+    </div>
+    <div class="input-block" id="iblock-file">
+      <div class="drop-zone" onclick="document.getElementById('fileInput').click()">
+        <input type="file" id="fileInput" style="display:none" onchange="handleFileSelect(event)">
+        <div class="drop-txt">Drop .docx or .pdf here or <b>browse</b></div>
+      </div>
+      <div id="filePreview"></div>
+    </div>
+    <div class="input-block" id="iblock-image">
+      <div class="drop-zone" onclick="document.getElementById('imgInput').click()">
+        <input type="file" id="imgInput" style="display:none" accept="image/*" onchange="handleImgSelect(event)">
+        <div class="drop-txt">Drop image here or <b>browse</b></div>
+      </div>
+      <div id="imgPreviewWrap" style="display:none">
+        <img id="imgPreview" style="max-width:100%; border-radius:8px">
+      </div>
+    </div>
+    <div class="input-block" id="iblock-link">
+      <div class="url-row">
+        <input type="url" class="url-in" id="urlInput" placeholder="https://example.com">       
+        <button class="btn-b btn-sm" onclick="saveUrl()">Save</button>
+      </div>
+      <div class="url-ok" id="urlOk"></div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-y" onclick="goStep2()">Choose Format ?</button>
+  </div>
+</div>
+
+<!-- STEP 2 -->
+<div class="step" id="step2">
+  <div class="fl">Step 02 � Preparation Type</div>
+  <div class="step2-layout">
+    <div class="step2-main">
+      <div class="section-hdr">Classic Tools</div>
+      <div class="options-grid" id="grid-classic"></div>
+      <div class="section-hdr" style="margin-top:1rem">Analysis</div>
+      <div class="options-grid" id="grid-analysis"></div>
+      <div class="section-hdr" style="margin-top:1rem">Interactive</div>
+      <div class="options-grid" id="grid-interactive"></div>
+
+      <div class="actions">
+        <button class="btn-y" id="genBtn" onclick="generate()" disabled>Generate ?</button>
+        <button class="btn-g" onclick="goStep(1)">? Back</button>
+      </div>
+    </div>
+    <div class="step2-side">
+      <div class="side-title">Tips</div>
+      <div id="sideItems"></div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3 (RESULTS) -->
+<div class="step" id="step3">
+  <div class="res-header">
+    <div class="res-title" id="resTitle">Your Material</div>
+    <div class="top-bar">
+      <button class="btn-g btn-sm" onclick="restart()">Reset</button>
+    </div>
+  </div>
+  <div id="resultArea"></div>
+</div>
+
+<!-- STEP 4 (REPORT) -->
+<div class="step" id="step4">
+  <div class="res-header">
+    <div class="res-title">Neural Synthesis Report</div>
+    <div class="top-bar">
+      <button class="btn-y btn-sm" onclick="restart()">New Prep</button>
+    </div>
+  </div>
+  <div id="reportArea"></div>
+</div>
+
+<!-- STEP 4 --><div class='step' id='step4'><div class='res-header'><div class='res-title'>Synthesis Report</div><div class='top-bar'><button class='btn-y btn-sm' onclick='restart()'>Reset</button></div></div><div id='reportArea'></div></div></div><!-- /app -->
+
+<div class="modal-ov" id="shareModal">
+  <div class="modal">
+    <div class="modal-title">Share</div>
+    <button class="btn-g" onclick="closeShare()">Close</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="exam-prep.js"></script>
+</body>
+</html>
+
